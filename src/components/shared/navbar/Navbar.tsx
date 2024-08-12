@@ -2,6 +2,7 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Theme from "./Theme";
 
 const Navbar = () => {
   return (
@@ -14,12 +15,13 @@ const Navbar = () => {
           alt="logo"
         />
         <p className="h2-bold text-dark-100 dark:text-light-900 max-sm:hidden">
-          Dev <span className="text-primary-500">Overflow</span>
+          Dev<span className="text-primary-500">Overflow</span>
         </p>
       </Link>
       GlobalSearch
       <div className="flex-between gap-5">
-        Theme
+        
+        <Theme />
         <SignedIn>
           <UserButton
             appearance={{

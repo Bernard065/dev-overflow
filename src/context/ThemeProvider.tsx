@@ -1,38 +1,44 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface ThemeContextType {
   mode: string;
   setMode: (mode: string) => void;
 }
 
-// Create a context with an initial value of `undefined`
+// Create a Context for the theme with an initial value of undefined.
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Themeprovider component to manage and provide the theme state
+// The ThemeProvider component will wrap around any child components that need access to the theme.
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // State to hold the current theme mode
+  // Initialize the state `mode` to hold the current theme, either 'light' or 'dark'.
   const [mode, setMode] = useState("");
 
-  // Function to toggle between dark an light modes
+  // Function to handle the theme change.
   const handleThemeChange = () => {
-    if (mode === "dark") {
-      setMode("light"); // Switch to light mode
-      document.documentElement.classList.add("light"); // Add light class to the root HTML element
+    // If the theme is stored as 'dark' in localStorage or if there's no theme in localStorage
+    // but the user prefers a dark theme based on their system settings, set the theme to dark.
+    // Otherwise set the theme to light
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      setMode("dark");
+      document.documentElement.classList.add("dark");
     } else {
-      setMode("dark"); // Switch to dark mode
-      document.documentElement.classList.add("dark"); // Add dark class to the root HTML element
+      setMode("light");
+      document.documentElement.classList.remove("dark");
     }
   };
 
-  // useEffect hook to run handleThemeChange whenever the mode changes
+  // useEffect hook runs the `handleThemeChange` function whenever `mode` changes
   useEffect(() => {
     handleThemeChange();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
-  // Provide the current mode and setMode function to children components
+  // The context provider passes down the `mode` and `setMode` to any component that consumes this context
   return (
     <ThemeContext.Provider value={{ mode, setMode }}>
       {children}
@@ -40,13 +46,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Custom hook to access the theme context
+// Custom hook to use the ThemeContext in functional components.
 export function useTheme() {
-  const context = useContext(ThemeContext); // Retrieve the current context value
+  const context = useContext(ThemeContext);
 
   if (context === undefined) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
 
-  return context; // Return the context value(mode and setMode)
+  return context; // Return the context value which includes `mode` and `setMode`.
 }
