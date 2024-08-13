@@ -2,6 +2,8 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Theme from "./Theme";
+import MobileNav from "./MobileNav";
 
 const Navbar = () => {
   return (
@@ -9,17 +11,17 @@ const Navbar = () => {
       <Link href="/" className="flex items-center gap-1">
         <Image
           src="/assets/images/site-logo.svg"
-          width={24}
-          height={24}
+          width={23}
+          height={23}
           alt="logo"
         />
-        <p className="h2-bold text-dark-100 dark:text-light-900 max-sm:hidden">
-          Dev <span className="text-primary-500">Overflow</span>
+        <p className="h2-bold font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden">
+          Dev<span className="text-primary-500">Overflow</span>
         </p>
       </Link>
       GlobalSearch
       <div className="flex-between gap-5">
-        Theme
+        <Theme />
         <SignedIn>
           <UserButton
             appearance={{
@@ -33,7 +35,7 @@ const Navbar = () => {
           />
         </SignedIn>
 
-        MobileNavbar
+        <MobileNav />
       </div>
     </nav>
   );
