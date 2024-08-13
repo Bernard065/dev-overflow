@@ -181,7 +181,7 @@
   }
 
   .invert-colors {
-    @apply invert dark:invert-0;
+    @apply invert dark:invert-0
   }
 
   .shadow-light100_dark100 {
