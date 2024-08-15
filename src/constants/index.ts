@@ -1,4 +1,3 @@
-
 export const themes = [
   { value: "light", label: "Light", icon: "/assets/icons/sun.svg" },
   { value: "dark", label: "Dark", icon: "/assets/icons/moon.svg" },
@@ -42,5 +41,13 @@ export const sidebarLinks = [
     label: "Ask a question",
   },
 ];
+
+export const HomePageFilters = [
+  { name: "Newest", value: "newest" },
+  { name: "Recommended", value: "recommended" },
+  { name: "Frequent", value: "frequent" },
+  { name: "Unanswered", value: "unanswered" },
+];
+
 
 

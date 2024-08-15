@@ -10,3 +10,12 @@ export interface CustomInputProps {
   imgSrc: string;
   placeholder: string;
 }
+
+export interface CustomFilterProps {
+  placeholder: string;
+  pageFilters: {
+    name: string;
+    value: string;
+  }[];
+  containerClasses?: string;
+}
