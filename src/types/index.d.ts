@@ -4,3 +4,9 @@ export interface RenderTagProps {
   totalQuestions?: number;
   showCount?: boolean;
 }
+
+export interface CustomInputProps {
+  route: string;
+  imgSrc: string;
+  placeholder: string;
+}
