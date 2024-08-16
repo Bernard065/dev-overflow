@@ -1,22 +1,21 @@
-import { Questionprops } from "@/types";
+import { QuestionCardProps } from "@/types";
 import Link from "next/link";
 import React from "react";
 
 const QuestionCard = ({
-  questionTitle,
+  _id,
+  title,
   answers,
-  questionTag,
+  tags,
   author,
   views,
-  votes,
+  upvotes,
   createdAt,
-}: Questionprops) => {
+}: QuestionCardProps) => {
   return (
-    <div className="background-light800_dark300 min-h-[210px] rounded-md border-none px-6 py-3">
+    <div className="background-light800_dark300 rounded-xl p-9">
       <div>
-        <Link href="/question" className="">
-          {questionTitle}
-        </Link>
+        test
       </div>
     </div>
   );
