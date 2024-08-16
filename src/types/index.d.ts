@@ -19,3 +19,28 @@ export interface CustomFilterProps {
   }[];
   containerClasses?: string;
 }
+
+export interface NoResultsProps {
+  title: string;
+  description: string;
+  link: string;
+  buttonTitle: string;
+}
+
+export interface QuestionCardProps {
+  _id: string;
+  title: string;
+  answers: Array<object>;
+  tags: {
+    _id: string;
+    name: string;
+  };
+  author: {
+    _id: string;
+    name: string;
+    picture: string;
+  };
+  views: number;
+  upvotes: number;
+  createdAt: Date;
+}
