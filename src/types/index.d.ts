@@ -19,3 +19,16 @@ export interface CustomFilterProps {
   }[];
   containerClasses?: string;
 }
+
+export interface Questionprops {
+  questionTitle: string;
+  answers: number;
+  questionTag: {
+    _id: string;
+    name: string;
+  }[];
+  author: string;
+  views: number;
+  votes: number;
+  createdAt: string;
+}
