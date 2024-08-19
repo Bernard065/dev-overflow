@@ -13,10 +13,24 @@ const Home = () => {
       _id: "1",
       title:
         "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
-      tags: {
-        _id: "1",
-        name: "Python",
-      },
+      tags: [
+        {
+          _id: "1",
+          name: "Python",
+        },
+        {
+          _id: "2",
+          name: "Redux",
+        },
+        {
+          _id: "3",
+          name: "Next.js",
+        },
+        {
+          _id: "4",
+          name: "Vue",
+        },
+      ],
       author: {
         _id: "1",
         name: "Bernard Bebeni",
@@ -39,10 +53,12 @@ const Home = () => {
     {
       _id: "2",
       title: "Redux Toolkit Not Updating State as Expected",
-      tags: {
-        _id: "2",
-        name: "JavaScript",
-      },
+      tags: [
+        {
+          _id: "2",
+          name: "JavaScript",
+        },
+      ],
       author: {
         _id: "1",
         name: "Bernard Bebeni",
@@ -60,10 +76,12 @@ const Home = () => {
       _id: "3",
       title:
         "How do ES6 module exports and imports work in JavaScript, and what are the key differences from CommonJS?",
-      tags: {
-        _id: "2",
-        name: "JavaScript",
-      },
+      tags: [
+        {
+          _id: "2",
+          name: "JavaScript",
+        },
+      ],
       author: {
         _id: "1",
         name: "Bernard Bebeni",

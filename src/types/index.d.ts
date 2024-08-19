@@ -1,5 +1,5 @@
 export interface RenderTagProps {
-  _id: number;
+  _id: string;
   title: string;
   totalQuestions?: number;
   showCount?: boolean;
@@ -34,7 +34,7 @@ export interface QuestionCardProps {
   tags: {
     _id: string;
     name: string;
-  };
+  }[];
   author: {
     _id: string;
     name: string;

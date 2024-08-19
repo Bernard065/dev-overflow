@@ -1,3 +1,7 @@
 {
-  "recommendations": ["ms-vsliveshare.vsliveshare", "ritwickdey.liveserver"]
+  "recommendations": [
+    "ms-vsliveshare.vsliveshare",
+    "ritwickdey.liveserver",
+    "github.copilot"
+  ]
 }
