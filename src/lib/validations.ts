@@ -9,7 +9,7 @@ export const questionFormValidation = z.object({
     }),
   explanation: z
     .string()
-    .min(200, { message: "Explanation must be more than 200 characters" }),
+    .min(100, { message: "Explanation must be more than 100 characters" }),
   tags: z
     .array(
       z
