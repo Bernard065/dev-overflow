@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,8 +21,11 @@ import { useTheme } from "@/context/ThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
+const type: any = "create";
+
 const QuestionForm = () => {
   const editorRef = useRef<Editor | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { mode } = useTheme();
 
   // 1. Define your form.
@@ -37,8 +40,17 @@ const QuestionForm = () => {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof questionFormValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    setIsSubmitting(true);
+
+    try {
+      // make an async request to the API -> create a question
+      // if successful, redirect to the home page
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+
     console.log(values);
   }
 
@@ -219,8 +231,15 @@ const QuestionForm = () => {
               </FormItem>
             )}
           />
-          <Button className="primary-gradient mt-5 min-h-[46px] rounded-lg !text-light-900">
-            Ask a Question
+          <Button
+            className="primary-gradient mt-5 min-h-[46px] rounded-lg !text-light-900"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>{type === "edit" ? "Editing..." : "Posting..."}</>
+            ) : (
+              <>{type === "edit" ? "Edit Question" : "Ask a Question"}</>
+            )}
           </Button>
         </form>
       </Form>
