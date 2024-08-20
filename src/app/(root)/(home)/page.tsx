@@ -36,7 +36,7 @@ const Home = () => {
         name: "Bernard Bebeni",
         picture: "/assets/images/bernard-bebeni.png", // Update with the actual path
       },
-      upvotes: 10,
+      upvotes: 1000,
       views: 100,
       answers: [
         {
