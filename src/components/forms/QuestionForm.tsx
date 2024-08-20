@@ -20,6 +20,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const type: any = "create";
 
@@ -39,11 +40,13 @@ const QuestionForm = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof questionFormValidation>) {
+  async function onSubmit(values: z.infer<typeof questionFormValidation>) {
     setIsSubmitting(true);
 
     try {
       // make an async request to the API -> create a question
+
+      await createQuestion({});
       // if successful, redirect to the home page
     } catch (error) {
       console.error(error);
