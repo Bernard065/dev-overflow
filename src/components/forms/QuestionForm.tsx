@@ -21,7 +21,6 @@ import { useTheme } from "@/context/ThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
-import { auth } from "@clerk/nextjs/server";
 import { usePathname, useRouter } from "next/navigation";
 
 const type: any = "create";
@@ -55,6 +54,7 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
         explanation: values.explanation,
         tags: values.tags,
         author: JSON.parse(mongoUserId),
+        path: pathname,
       });
 
       // if successful, redirect to the home page

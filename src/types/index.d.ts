@@ -1,5 +1,8 @@
+import { IUser } from "@/database/user.model";
+import { Schema } from "mongoose";
+
 export interface RenderTagProps {
-  _id: number;
+  _id: string;
   title: string;
   totalQuestions?: number;
   showCount?: boolean;
@@ -29,7 +32,7 @@ export interface NoResultsProps {
 
 export interface QuestionCardProps {
   _id: string;
-  title: string;
+  questionTitle: string;
   answers: Array<object>;
   tags: {
     _id: string;
@@ -49,6 +52,13 @@ export interface CreateQuestionParams {
   questionTitle: string;
   explanation: string;
   tags: string[];
-  author: string;
+  author: Schema.Types.ObjectId | IUser;
   path: string;
+}
+
+export interface GetQuestionsParams {
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+  filter?: string;
 }
