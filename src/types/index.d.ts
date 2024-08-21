@@ -2,7 +2,7 @@ import { IUser } from "@/database/user.model";
 import { Schema } from "mongoose";
 
 export interface RenderTagProps {
-  _id: string;
+  _id: string | number;
   title: string;
   totalQuestions?: number;
   showCount?: boolean;
@@ -31,7 +31,7 @@ export interface NoResultsProps {
 }
 
 export interface QuestionCardProps {
-  _id: string;
+  _id: number;
   questionTitle: string;
   answers: Array<object>;
   tags: {
