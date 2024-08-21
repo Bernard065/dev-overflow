@@ -21,10 +21,13 @@ import { useTheme } from "@/context/ThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
+import { usePathname, useRouter } from "next/navigation";
 
 const type: any = "create";
 
-const QuestionForm = () => {
+const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const editorRef = useRef<Editor | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mode } = useTheme();
@@ -46,8 +49,16 @@ const QuestionForm = () => {
     try {
       // make an async request to the API -> create a question
 
-      await createQuestion({});
+      await createQuestion({
+        questionTitle: values.questionTitle,
+        explanation: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname,
+      });
+
       // if successful, redirect to the home page
+      router.push("/");
     } catch (error) {
       console.error(error);
     } finally {
