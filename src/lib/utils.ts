@@ -52,3 +52,5 @@ export const formatAndDivideNumber = (num: number): string => {
     return num.toString();
   }
 };
+
+export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));

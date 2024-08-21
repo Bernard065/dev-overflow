@@ -44,3 +44,11 @@ export interface QuestionCardProps {
   upvotes: number;
   createdAt: Date;
 }
+
+export interface CreateQuestionParams {
+  questionTitle: string;
+  explanation: string;
+  tags: string[];
+  author: string;
+  path: string;
+}
