@@ -47,7 +47,7 @@ const QuestionCard = ({
         <div className="flex flex-wrap">
           <Link href={`/profile/${author._id}`}>
             <Metric
-              imgUrl="/assets/icons/computer.svg"
+              imgUrl={author.picture}
               alt="user"
               title={` - asked ${getTimestamp(createdAt)}`}
               value={author.name}
