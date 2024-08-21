@@ -62,3 +62,25 @@ export interface GetQuestionsParams {
   searchQuery?: string;
   filter?: string;
 }
+
+export interface GetUserByIdParams {
+  userId: string;
+}
+
+export interface CreateUserParams {
+  clerkId: string;
+  email: string;
+  name: string;
+  username: string;
+  picture: string;
+}
+
+export interface UpdateUserParams {
+  clerkId: string;
+  updateData: Partial<IUser>;
+  path: string;
+}
+
+export interface DeleteUserParams {
+  clerkId: string;
+}
