@@ -29,11 +29,13 @@ const Home = async () => {
           route="/"
           imgSrc="assets/icons/search.svg"
           placeholder="Search for questions..."
+          otherClasses="flex-1"
         />
 
         <Filter
           placeholder="Select a Filter"
           pageFilters={HomePageFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
           containerClasses="hidden max-md:flex"
         />
       </div>
