@@ -1,13 +1,29 @@
+"use client";
+
 import { getTopInteractedTags } from "@/lib/actions/tag.action";
 import { UserCardProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import RenderTag from "../shared/RenderTag";
 
-const UserCard = async ({ user }: UserCardProps) => {
-  const topInteractedTags = await getTopInteractedTags({ userId: user._id });
+interface Tag {
+  id: number;
+  name: string;
+}
+
+const UserCard = ({ user }: UserCardProps) => {
+  const [topInteractedTags, setTopInteractedTags] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    const fetchTopInteractedTags = async () => {
+      const tags = await getTopInteractedTags({ userId: user._id });
+      setTopInteractedTags(tags || []);
+    };
+
+    fetchTopInteractedTags();
+  }, [user._id]);
 
   return (
     <Link
