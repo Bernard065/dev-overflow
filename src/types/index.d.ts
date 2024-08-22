@@ -12,6 +12,7 @@ export interface CustomInputProps {
   route: string;
   imgSrc: string;
   placeholder: string;
+  otherClasses?: string;
 }
 
 export interface CustomFilterProps {
@@ -21,6 +22,7 @@ export interface CustomFilterProps {
     value: string;
   }[];
   containerClasses?: string;
+  otherClasses?: string;
 }
 
 export interface NoResultsProps {
@@ -67,6 +69,13 @@ export interface GetUserByIdParams {
   userId: string;
 }
 
+export interface GetAllUsersParams {
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+  filter?: string;
+}
+
 export interface CreateUserParams {
   clerkId: string;
   email: string;
@@ -83,4 +92,19 @@ export interface UpdateUserParams {
 
 export interface DeleteUserParams {
   clerkId: string;
+}
+
+export interface UserCardProps {
+  user: {
+    _id: string;
+    clerkId: string;
+    name: string;
+    picture: string;
+    username: string;
+  };
+}
+
+export interface GetTopInteractedTagsParams {
+  userId: string;
+  limit?: number;
 }
