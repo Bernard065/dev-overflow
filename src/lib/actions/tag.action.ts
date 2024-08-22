@@ -1,8 +1,10 @@
 "use server";
 
-import { GetTopInteractedTagsParams } from "@/types";
+import { GetAllTagsParams, GetTopInteractedTagsParams } from "@/types";
 import User from "@/database/user.model";
 import { connectToDatabase } from "../mongoose/mongoose";
+import Tag from "@/database/tag.model";
+
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -23,6 +25,18 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
       { id: 2, name: "React" },
       { id: 3, name: "NextJs" },
     ];
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAllTags(params: GetAllTagsParams) {
+  try {
+    connectToDatabase();
+
+    const tags = await Tag.find({})
+
+    return { tags };
   } catch (error) {
     console.log(error);
   }
