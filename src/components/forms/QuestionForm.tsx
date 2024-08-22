@@ -64,8 +64,6 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
     } finally {
       setIsSubmitting(false);
     }
-
-    console.log(values);
   }
 
   const handleInputKeyDown = (
