@@ -55,6 +55,7 @@ export async function createQuestion(params: CreateQuestionParams) {
   }
 }
 
+// Function to get all questions from the database
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
@@ -68,6 +69,25 @@ export async function getQuestions(params: GetQuestionsParams) {
       .sort({ createdAt: -1 });
 
     return { questions };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Function to get a question by ID
+export async function getQuestionById(id: string) {
+  try {
+    connectToDatabase();
+
+    const question = await Question.findById(id)
+      .populate({ path: "tags", model: Tag, select: "_id name" })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      });
+
+    return question;
   } catch (error) {
     console.log(error);
   }
