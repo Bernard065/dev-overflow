@@ -12,11 +12,8 @@ import React from "react";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  console.log("The id is", id);
 
   const result = await getQuestionById(id);
-
-  console.log("The result is", result);
 
   return (
     <>

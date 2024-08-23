@@ -1,5 +1,3 @@
-"use server";
-
 import { model, models, Schema } from "mongoose";
 
 export interface IAnswer extends Document {
