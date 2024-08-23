@@ -1,5 +1,8 @@
+import Filter from "@/components/shared/Filter";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
+import RenderTag from "@/components/shared/RenderTag";
+import { AnswerFilters } from "@/constants";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import Image from "next/image";
@@ -76,6 +79,27 @@ const Page = async ({ params }: { params: { id: string } }) => {
       </div>
 
       <ParseHTML data={result?.explanation} />
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        {result?.tags.map((tag: any) => (
+          <RenderTag key={tag.id} _id={tag.id} title={tag.name} />
+        ))}
+      </div>
+
+      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
+        <Metric
+          imgUrl="/assets/icons/message.svg"
+          alt="mesage"
+          title="Answers"
+          value={formatAndDivideNumber(result?.answers.length)}
+          textStyles="body-bold text-primary-500"
+        />
+        <Filter
+          placeholder="Select a Filter"
+          pageFilters={AnswerFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+        />
+      </div>
     </>
   );
 };
