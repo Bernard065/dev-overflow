@@ -20,3 +20,9 @@ export const questionFormValidation = z.object({
     .min(1, { message: "Minimum of 1 tag" })
     .max(5, { message: "Maximum of 5 tags" }),
 });
+
+export const answerFormValidation = z.object({
+  answer: z.string().min(100, {
+    message: "Answer must be at least 100 characters.",
+  }),
+});
