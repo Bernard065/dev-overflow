@@ -122,3 +122,9 @@ export interface CreateAnswerParams {
   question: string; // Question ID
   path: string;
 }
+
+export interface AnswerFormProps {
+  question: string;
+  questionId: string;
+  authorId: string;
+}

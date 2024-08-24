@@ -16,11 +16,15 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { answerFormValidation } from "@/lib/validations";
 import Image from "next/image";
+import { createAnswer } from "@/lib/actions/answer.action";
+import { AnswerFormProps } from "@/types";
+import { usePathname } from "next/navigation";
 
-const AnswerForm = () => {
+const AnswerForm = ({ question, questionId, authorId }: AnswerFormProps) => {
   const editorRef = useRef<Editor | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mode } = useTheme();
+  const pathname = usePathname();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof answerFormValidation>>({
@@ -31,10 +35,24 @@ const AnswerForm = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof answerFormValidation>) {
+  async function onSubmit(values: z.infer<typeof answerFormValidation>) {
     setIsSubmitting(true);
 
     try {
+      await createAnswer({
+        content: values.answer,
+        author: JSON.parse(authorId),
+        question: JSON.parse(questionId),
+        path: pathname,
+      });
+
+      form.reset();
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+
+        editor.setContent("");
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -125,6 +143,7 @@ const AnswerForm = () => {
             )}
           />
           <Button
+            type="submit"
             className="primary-gradient mt-5 min-h-[46px] w-full rounded-lg !text-light-900"
             disabled={isSubmitting}
           >
