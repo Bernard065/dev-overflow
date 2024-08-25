@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from "react";
 import ParseHTML from "./ParseHTML";
 import { getTimestamp } from "@/lib/utils";
+import Votes from "./Votes";
 
 const AllAnswers = async ({
   questionId,
@@ -47,7 +48,15 @@ const AllAnswers = async ({
                 </div>
               </Link>
               <div className="flex justify-end">
-                Voting
+                <Votes
+                  type="answer"
+                  itemId={JSON.stringify(answer._id)}
+                  userId={userId}
+                  upvotes={answer.upvotes.length}
+                  downvotes={answer.downvotes.length}
+                  hasUpvoted={answer.upvotes.includes(userId)}
+                  hasDownvoted={answer.downvotes.includes(userId)}
+                />
               </div>
             </div>
             <ParseHTML data={answer.content} />
