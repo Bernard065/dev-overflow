@@ -154,3 +154,19 @@ export interface VotesProps {
   hasDownvoted: boolean;
   hasSaved?: boolean;
 }
+
+export interface AnswerVoteParams {
+  answerId: string;
+  userId: string;
+  hasupVoted: boolean;
+  hasdownVoted: boolean;
+  path: string;
+}
+
+export interface QuestionVoteParams {
+  questionId: string;
+  userId: string;
+  hasupVoted: boolean;
+  hasdownVoted: boolean;
+  path: string;
+}
