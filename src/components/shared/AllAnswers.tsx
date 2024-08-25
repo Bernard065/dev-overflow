@@ -1,10 +1,10 @@
 import { getAllAnswer } from "@/lib/actions/answer.action";
-import { getTimestamp } from "@/lib/utils";
 import { AllAnswersProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ParseHTML from "./ParseHTML";
+import { getTimestamp } from "@/lib/utils";
 
 const AllAnswers = async ({
   questionId,
@@ -46,7 +46,9 @@ const AllAnswers = async ({
                   </p>
                 </div>
               </Link>
-              <div className="flex justify-end">VOTING</div>
+              <div className="flex justify-end">
+                Voting
+              </div>
             </div>
             <ParseHTML data={answer.content} />
           </article>

@@ -143,3 +143,14 @@ export interface AllAnswersProps {
   page?: number;
   filter?: string;
 }
+
+export interface VotesProps {
+  type: string;
+  itemId: string;
+  userId: string;
+  upvotes: number;
+  downvotes: number;
+  hasUpvoted: boolean;
+  hasDownvoted: boolean;
+  hasSaved?: boolean;
+}
