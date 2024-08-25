@@ -128,3 +128,18 @@ export interface AnswerFormProps {
   questionId: string;
   authorId: string;
 }
+
+export interface GetAnswersParams {
+  questionId: string;
+  sortBy?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface AllAnswersProps {
+  questionId: string;
+  userId: string;
+  totalAnswers: number;
+  page?: number;
+  filter?: string;
+}

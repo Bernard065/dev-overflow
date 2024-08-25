@@ -1,4 +1,5 @@
 import AnswerForm from "@/components/forms/AnswerForm";
+import AllAnswers from "@/components/shared/AllAnswers";
 import Filter from "@/components/shared/Filter";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
@@ -107,6 +108,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
           otherClasses="min-h-[56px] sm:min-w-[170px]"
         />
       </div>
+
+      <AllAnswers
+        questionId={result._id}
+        userId={JSON.stringify(mongoUser._id)}
+        totalAnswers={result?.answers.length}
+      />
 
       <AnswerForm
         question={result.content}
