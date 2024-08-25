@@ -1,8 +1,13 @@
 "use client";
 
+import {
+  downvoteQuestion,
+  upvoteQuestion,
+} from "@/lib/actions/question.action";
 import { formatAndDivideNumber } from "@/lib/utils";
 import { VotesProps } from "@/types";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const Votes = ({
@@ -11,11 +16,46 @@ const Votes = ({
   userId,
   upvotes,
   downvotes,
-  hasUpvoted,
-  hasDownvoted,
+  hasupVoted,
+  hasdownVoted,
   hasSaved,
 }: VotesProps) => {
-  const handleVote = async (action: string) => {};
+  const pathname = usePathname();
+
+  const handleVote = async (action: string) => {
+    try {
+      if (!userId) return null;
+
+      if (action === "upvote") {
+        if (type === "question") {
+          // Call upvoteQuestion action
+          await upvoteQuestion({
+            questionId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasdownVoted,
+            hasupVoted,
+            path: pathname,
+          });
+        }
+        return;
+      }
+
+      if (action === "downvote") {
+        if (type === "question") {
+          // Call downvoteQuestion action
+          await downvoteQuestion({
+            questionId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasdownVoted,
+            hasupVoted,
+            path: pathname,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSave = async () => {};
 
@@ -25,7 +65,7 @@ const Votes = ({
         <div className="flex-center">
           <Image
             src={
-              hasUpvoted
+              hasupVoted
                 ? "/assets/icons/upvoted.svg"
                 : "/assets/icons/upvote.svg"
             }
@@ -46,7 +86,7 @@ const Votes = ({
         <div className="flex-center">
           <Image
             src={
-              hasDownvoted
+              hasdownVoted
                 ? "/assets/icons/downvoted.svg"
                 : "/assets/icons/downvote.svg"
             }
