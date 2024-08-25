@@ -143,14 +143,14 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     let updateQuery = {};
 
     if (hasdownVoted) {
-      updateQuery = { $pull: { downVotes: userId } };
+      updateQuery = { $pull: { downvotes: userId } };
     } else if (hasupVoted) {
       updateQuery = {
-        $pull: { upVotes: userId },
-        $push: { downVotes: userId },
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId },
       };
     } else {
-      updateQuery = { $addToSet: { downVotes: userId } };
+      updateQuery = { $addToSet: { downvotes: userId } };
     }
 
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {

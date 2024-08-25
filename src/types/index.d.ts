@@ -46,7 +46,8 @@ export interface QuestionCardProps {
     picture: string;
   };
   views: number;
-  upvotes: number;
+  upvotes: string[];
+  downvotes: string[];
   createdAt: Date;
 }
 
@@ -150,8 +151,8 @@ export interface VotesProps {
   userId: string;
   upvotes: number;
   downvotes: number;
-  hasUpvoted: boolean;
-  hasDownvoted: boolean;
+  hasupVoted: boolean;
+  hasdownVoted: boolean;
   hasSaved?: boolean;
 }
 

@@ -55,8 +55,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
               userId={JSON.stringify(mongoUser._id)}
               upvotes={result.upvotes.length}
               downvotes={result.downvotes.length}
-              hasUpvoted={result.upvotes.includes(mongoUser._id)}
-              hasDownvoted={result.downvotes.includes(mongoUser._id)}
+              hasupVoted={result.upvotes.includes(mongoUser._id)}
+              hasdownVoted={result.downvotes.includes(mongoUser._id)}
               hasSaved={mongoUser?.saved.includes(result._id)}
             />
           </div>
@@ -79,7 +79,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
           imgUrl="/assets/icons/like.svg"
           alt="upvotes"
           title="Votes"
-          value={formatAndDivideNumber(result?.upvotes.length)}
+          value={formatAndDivideNumber(
+            result?.upvotes.length + result?.downvotes.length
+          )}
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
