@@ -1,5 +1,6 @@
 "use client";
 
+import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import {
   downvoteQuestion,
   upvoteQuestion,
@@ -36,8 +37,16 @@ const Votes = ({
             hasupVoted,
             path: pathname,
           });
+        } else if (type === "answer") {
+          // Call upvoteAnswer action
+          await upvoteAnswer({
+            answerId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasdownVoted,
+            hasupVoted,
+            path: pathname,
+          });
         }
-        return;
       }
 
       if (action === "downvote") {
@@ -45,6 +54,15 @@ const Votes = ({
           // Call downvoteQuestion action
           await downvoteQuestion({
             questionId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasdownVoted,
+            hasupVoted,
+            path: pathname,
+          });
+        } else if (type === "answer") {
+          // Call downvoteAnswer action
+          await downvoteAnswer({
+            answerId: JSON.parse(itemId),
             userId: JSON.parse(userId),
             hasdownVoted,
             hasupVoted,
@@ -105,7 +123,7 @@ const Votes = ({
         </div>
       </div>
 
-      {type === "question" && (
+      {type === "answer" && (
         <Image
           src={
             hasSaved

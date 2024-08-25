@@ -1,6 +1,10 @@
 "use server";
 
-import { CreateAnswerParams, GetAnswersParams } from "@/types";
+import {
+  AnswerVoteParams,
+  CreateAnswerParams,
+  GetAnswersParams,
+} from "@/types";
 import { connectToDatabase } from "../mongoose/mongoose";
 import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
@@ -43,5 +47,77 @@ export async function getAllAnswer(params: GetAnswersParams) {
     return { answers };
   } catch (error) {
     console.error(error);
+  }
+}
+
+// Action to upvote an answer
+export async function upvoteAnswer(params: AnswerVoteParams) {
+  try {
+    connectToDatabase();
+
+    const { answerId, userId, hasdownVoted, hasupVoted, path } = params;
+
+    let updateQuery = {};
+
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } };
+    } else if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId },
+      };
+    } else {
+      updateQuery = { $addToSet: { upvotes: userId } };
+    }
+
+    const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
+      new: true,
+    });
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    // Increment the user's reputation for upvoting a question
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Action to downvote an answer
+export async function downvoteAnswer(params: AnswerVoteParams) {
+  try {
+    connectToDatabase();
+
+    const { answerId, userId, hasdownVoted, hasupVoted, path } = params;
+
+    let updateQuery = {};
+
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvotes: userId } };
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId },
+      };
+    } else {
+      updateQuery = { $addToSet: { downvotes: userId } };
+    }
+
+    const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
+      new: true,
+    });
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    // Increment the user's reputation for downvoting a question
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
   }
 }
