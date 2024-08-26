@@ -6,12 +6,17 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetSavedQuestionsParams,
   GetUserByIdParams,
+  SaveQuestionParams,
   UpdateUserParams,
 } from "@/types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
+import Tag from "@/database/tag.model";
+import { FilterQuery } from "mongoose";
 
+// Create user
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDatabase();
@@ -24,6 +29,7 @@ export async function createUser(userData: CreateUserParams) {
   }
 }
 
+// Get user by ID
 export async function getUserById(params: GetUserByIdParams) {
   try {
     connectToDatabase();
@@ -38,6 +44,7 @@ export async function getUserById(params: GetUserByIdParams) {
   }
 }
 
+// Get all users
 export async function getAllUsers(params: GetAllUsersParams) {
   try {
     connectToDatabase();
@@ -52,6 +59,7 @@ export async function getAllUsers(params: GetAllUsersParams) {
   }
 }
 
+// Update user
 export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
@@ -68,6 +76,7 @@ export async function updateUser(params: UpdateUserParams) {
   }
 }
 
+// Delete user
 export async function deleteUser(params: DeleteUserParams) {
   try {
     connectToDatabase();
@@ -97,6 +106,85 @@ export async function deleteUser(params: DeleteUserParams) {
     const deletedUser = await User.findOneAndDelete(user._id);
 
     return deletedUser;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Save question to user
+export async function saveQuestion(params: SaveQuestionParams) {
+  try {
+    connectToDatabase();
+
+    const { userId, questionId, path } = params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const isQuestionSaved = user.saved.includes(questionId);
+
+    if (isQuestionSaved) {
+      // remove question from saved
+      await User.findByIdAndUpdate(
+        userId,
+        { $pull: { saved: questionId } },
+        { new: true }
+      );
+    } else {
+      // add question to saved
+      await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { saved: questionId } },
+        { new: true }
+      );
+    }
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get user saved questions
+export async function getSavedQuestions(params: GetSavedQuestionsParams) {
+  try {
+    connectToDatabase();
+
+    const { clerkId, searchQuery } = params;
+
+    const query: FilterQuery<typeof User> = {};
+
+    if (searchQuery) {
+      const escapedSearchQuery = searchQuery.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&"
+      );
+      query.$or = [
+        { name: { $regex: new RegExp(escapedSearchQuery, "i") } },
+        { username: { $regex: new RegExp(escapedSearchQuery, "i") } },
+      ];
+    }
+
+    const user = await User.findOne({ clerkId }).populate({
+      path: "saved",
+      match: query,
+      options: { sort: { createdAt: -1 } },
+      populate: [
+        { path: "tags", model: Tag, select: "_id name" },
+        { path: "author", model: User, select: "_id clerkId name picture" },
+      ],
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const savedQuestions = user.saved;
+
+    return { questions: savedQuestions };
   } catch (error) {
     console.log(error);
   }

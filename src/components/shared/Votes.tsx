@@ -5,6 +5,7 @@ import {
   downvoteQuestion,
   upvoteQuestion,
 } from "@/lib/actions/question.action";
+import { saveQuestion } from "@/lib/actions/user.action";
 import { formatAndDivideNumber } from "@/lib/utils";
 import { VotesProps } from "@/types";
 import Image from "next/image";
@@ -75,7 +76,13 @@ const Votes = ({
     }
   };
 
-  const handleSave = async () => {};
+  const handleSave = async () => {
+    await saveQuestion({
+      userId: JSON.parse(userId),
+      questionId: JSON.parse(itemId),
+      path: pathname,
+    });
+  };
 
   return (
     <div className="flex-center gap-5">
@@ -123,7 +130,7 @@ const Votes = ({
         </div>
       </div>
 
-      {type === "answer" && (
+      {type === "question" && (
         <Image
           src={
             hasSaved
