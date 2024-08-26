@@ -171,3 +171,17 @@ export interface QuestionVoteParams {
   hasdownVoted: boolean;
   path: string;
 }
+
+export interface SaveQuestionParams {
+  questionId: string;
+  userId: string;
+  path: string;
+}
+
+export interface GetSavedQuestionsParams {
+  clerkId: string;
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+  searchQuery?: string;
+}
