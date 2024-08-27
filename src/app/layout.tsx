@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description:
     "Stack overflow clone - A community-driven platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers from around the world.",
   icons: {
-    icon: "assets/images/site-logo.svg",
+    icon: "/assets/images/site-logo.svg",
   },
 };
 
