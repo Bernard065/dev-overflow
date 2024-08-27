@@ -79,9 +79,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           imgUrl="/assets/icons/like.svg"
           alt="upvotes"
           title="Votes"
-          value={formatAndDivideNumber(
-            result?.upvotes.length + result?.downvotes.length
-          )}
+          value={formatAndDivideNumber(result?.upvotes.length)}
           textStyles="small-medium text-dark400_light800"
         />
         <Metric

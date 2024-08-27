@@ -13,7 +13,6 @@ const QuestionCard = ({
   author,
   views,
   upvotes,
-  downvotes,
   createdAt,
 }: QuestionCardProps) => {
   return (
@@ -63,7 +62,7 @@ const QuestionCard = ({
             imgUrl="/assets/icons/like.svg"
             alt="upvotes"
             title="Votes"
-            value={formatAndDivideNumber((upvotes.length) + (downvotes.length))}
+            value={formatAndDivideNumber(upvotes.length)}
             textStyles="small-medium text-dark400_light800"
           />
           <Metric

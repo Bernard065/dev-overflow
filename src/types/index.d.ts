@@ -47,7 +47,6 @@ export interface QuestionCardProps {
   };
   views: number;
   upvotes: string[];
-  downvotes: string[];
   createdAt: Date;
 }
 
@@ -184,4 +183,9 @@ export interface GetSavedQuestionsParams {
   pageSize?: number;
   filter?: string;
   searchQuery?: string;
+}
+
+export interface ViewQuestionParams {
+  questionId: string;
+  userId: string | undefined;
 }
