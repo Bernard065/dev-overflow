@@ -116,6 +116,7 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
 
     // Increment the user's reputation for downvoting a question
 
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);
