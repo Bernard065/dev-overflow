@@ -54,3 +54,19 @@ export const formatAndDivideNumber = (num: number): string => {
 };
 
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
+
+export const getJoinedDate = (date?: Date): string => {
+  if (!date) {
+    console.error("Date is undefined or null");
+    return "Unknown date";
+  }
+
+  // Extract the month and year from the Date object
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getFullYear();
+
+  // Create the joined date string
+  const joinedDate = `${month} ${year}`;
+
+  return joinedDate;
+};
