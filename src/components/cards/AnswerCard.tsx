@@ -3,6 +3,8 @@ import Link from "next/link";
 import React from "react";
 import Metric from "../shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 const AnswerCard = ({
   authorId,
@@ -14,6 +16,7 @@ const AnswerCard = ({
   upvotes,
   createdAt,
 }: AnswerCardProps) => {
+
   return (
     <div className="card-wrapper rounded-xl p-9">
       <div>
@@ -23,6 +26,12 @@ const AnswerCard = ({
           </h3>
         </Link>
       </div>
+
+      <SignedIn>
+        {clerkId && (
+          <EditDeleteAction type="answer" itemId={JSON.stringify(questionId)} />
+        )}
+      </SignedIn>
 
       <div className="flex-between mt-6 flex w-full flex-wrap gap-3">
         <div className="flex flex-wrap">

@@ -45,6 +45,7 @@ export interface QuestionCardProps {
     _id: string;
     name: string;
     picture: string;
+    clerkId: string;
   };
   views: number;
   upvotes: string[];
@@ -230,4 +231,19 @@ export interface GetUserStatsParams {
   userId: string;
   page?: number;
   pageSize?: number;
+}
+
+export interface EditDeleteProps {
+  itemId: string;
+  type: string;
+}
+
+export interface DeleteQuestionParams {
+  questionId: string;
+  path: string;
+}
+
+export interface DeleteAnswerParams {
+  answerId: string;
+  path: string;
 }
