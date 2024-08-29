@@ -196,3 +196,14 @@ export interface GetQuestionsByTagIdParams {
   pageSize?: number;
   searchQuery?: string;
 }
+
+export interface StatsProps {
+  totalQuestions: number;
+  totalAnswers: number;
+}
+
+export interface StatsCardProps {
+  imgUrl: string;
+  value: number;
+  title: string;
+}
