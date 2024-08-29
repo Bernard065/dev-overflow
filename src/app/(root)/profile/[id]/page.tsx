@@ -8,11 +8,12 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getJoinedDate } from "@/lib/utils";
 import ProfileLink from "@/components/shared/ProfileLink";
+import Stats from "@/components/shared/Stats";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
-  const { userId } = auth();
+  const { userId: clerkId } = auth();
 
   const result = await getUserInfo({ userId: id });
 
@@ -71,7 +72,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
         <div className="flex justify-end max-md:mt-3 max-sm:mb-5 max-sm:w-full">
           <SignedIn>
-            {userId === result?.user.clerkId && (
+            {clerkId === result?.user.clerkId && (
               <Link href="profile/edit">
                 <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                   Edit Profile
@@ -81,7 +82,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </SignedIn>
         </div>
       </div>
-      Stats
+
+      <Stats
+        totalQuestions={result?.totalQuestions || 0}
+        totalAnswers={result?.totalAnswers || 0}
+      />
+
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-questions" className="flex-1">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1">

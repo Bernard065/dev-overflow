@@ -45,7 +45,7 @@ const QuestionCard = ({
 
       <div className="flex-between mt-6 flex w-full flex-wrap gap-3">
         <div className="flex flex-wrap">
-          <Link href={`/profile/${author._id}`}>
+          <Link href={`/profile/${author._id || author}`}>
             <Metric
               imgUrl={author.picture}
               alt="user"
