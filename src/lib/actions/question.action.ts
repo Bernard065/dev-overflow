@@ -6,10 +6,13 @@ import Tag from "@/database/tag.model";
 import {
   CreateQuestionParams,
   GetQuestionsParams,
+  GetUserStatsParams,
   QuestionVoteParams,
 } from "@/types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
+import { use } from "react";
+import { model } from "mongoose";
 
 export async function createQuestion(params: CreateQuestionParams) {
   try {
@@ -164,6 +167,26 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     // Increment the user's reputation for downvoting a question
 
     revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// action to get questions belonging to a specific user
+export async function getQuestionsByUser(params: GetUserStatsParams) {
+  try {
+    connectToDatabase();
+
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const totalQuestions = await Question.countDocuments({ author: userId });
+
+    const userQuestions = await Question.find({ author: userId })
+      .sort({ views: -1, upvotes: -1 })
+      .populate("tags", "_id name")
+      .populate("author", "_id clerkId name picture");
+
+    return { totalQuestions, questions: userQuestions };
   } catch (error) {
     console.log(error);
   }

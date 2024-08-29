@@ -189,19 +189,18 @@ export async function getUserInfo(params: GetUserByIdParams) {
 
     const { userId } = params;
 
-    const user = await User.findOne({clerkId: userId});
+    const user = await User.findOne({ clerkId: userId });
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    const totalQuestions = await Question.countDocuments({author: user._id});
+    const totalQuestions = await Question.countDocuments({ author: user._id });
 
-    const totalAnswers = await Answer.countDocuments({author: user._id});
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
 
-    return {user, totalQuestions, totalAnswers};
-  }
-  catch (error) {
+    return { user, totalQuestions, totalAnswers };
+  } catch (error) {
     console.log(error);
   }
 }

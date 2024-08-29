@@ -9,15 +9,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getJoinedDate } from "@/lib/utils";
 import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
+import QuestionTab from "@/components/shared/QuestionTab";
+import AnswerTab from "@/components/shared/AnswerTab";
+interface Props {
+  params: { id: string };
+  searchParams: { [key: string]: string | undefined };
+}
 
-const Page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params, searchParams }: Props) => {
   const { id } = params;
 
   const { userId: clerkId } = auth();
 
   const result = await getUserInfo({ userId: id });
-
-  console.log("result", result);
 
   return (
     <>
@@ -91,11 +95,27 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-questions" className="flex-1">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1">
-            <TabsTrigger value="top-questions">Top Questions</TabsTrigger>
-            <TabsTrigger value="answers">Answers</TabsTrigger>
+            <TabsTrigger value="top-questions" className="tab">
+              Top Questions
+            </TabsTrigger>
+            <TabsTrigger value="answers" className="tab">
+              Answers
+            </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-questions">POSTS</TabsContent>
-          <TabsContent value="answers">ANSWERS</TabsContent>
+          <TabsContent value="top-questions">
+            <QuestionTab
+              userId={result?.user._id}
+              clerkId={clerkId}
+              searchParams={searchParams}
+            />
+          </TabsContent>
+          <TabsContent value="answers">
+            <AnswerTab
+              userId={result?.user._id}
+              clerkId={clerkId}
+              searchParams={searchParams}
+            />
+          </TabsContent>
         </Tabs>
       </div>
     </>
