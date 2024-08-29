@@ -7,6 +7,7 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
 const QuestionCard = ({
   _id,
+  clerkId,
   questionTitle,
   answers,
   tags = [],

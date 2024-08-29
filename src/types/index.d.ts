@@ -34,6 +34,7 @@ export interface NoResultsProps {
 
 export interface QuestionCardProps {
   _id: number;
+  clerkId?: string | null;
   questionTitle: string;
   answers: Array<object>;
   tags: {
@@ -206,4 +207,27 @@ export interface StatsCardProps {
   imgUrl: string;
   value: number;
   title: string;
+}
+
+export interface TabProps {
+  userId: string;
+  clerkId?: string | null;
+  searchParams: { [key: string]: string | undefined };
+}
+
+export interface AnswerCardProps {
+  authorId: string;
+  clerkId?: string | null;
+  authorPicture: string;
+  questionId: string;
+  questionTitle: string;
+  authorName: string;
+  upvotes: string[];
+  createdAt: Date;
+}
+
+export interface GetUserStatsParams {
+  userId: string;
+  page?: number;
+  pageSize?: number;
 }
