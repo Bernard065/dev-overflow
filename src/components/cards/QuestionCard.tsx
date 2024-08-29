@@ -4,6 +4,8 @@ import React from "react";
 import RenderTag from "@/components/shared/RenderTag";
 import Metric from "@/components/shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import EditDeleteAction from "../shared/EditDeleteAction";
+import { SignedIn } from "@clerk/nextjs";
 
 const QuestionCard = ({
   _id,
@@ -31,6 +33,11 @@ const QuestionCard = ({
         </div>
 
         {/* If signed in, add edit and delete buttons here */}
+        <SignedIn>
+          {clerkId && clerkId === author.clerkId && (
+            <EditDeleteAction type="question" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">

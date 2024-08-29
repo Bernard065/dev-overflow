@@ -5,7 +5,7 @@ import NoResult from "./NoResult";
 import AnswerCard from "../cards/AnswerCard";
 
 const AnswerTab = async ({ userId, clerkId, searchParams }: TabProps) => {
-  const result = await getUserAnswers({ userId, page: 1, pageSize: 10 });
+  const result = await getUserAnswers({ userId, page: 1 });
 
   return (
     <div className="mt-11 flex w-full flex-col gap-6">
@@ -14,7 +14,7 @@ const AnswerTab = async ({ userId, clerkId, searchParams }: TabProps) => {
           <AnswerCard
             key={answer._id}
             clerkId={clerkId}
-            authorId={answer.author._id}
+            authorId={JSON.stringify(answer.author._id)}
             authorPicture={answer.author.picture}
             questionId={answer.question._id}
             questionTitle={answer.question.questionTitle}
