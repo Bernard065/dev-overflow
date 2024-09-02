@@ -20,25 +20,33 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
 
-const type: any = "create";
+interface Props {
+  mongoUserId: string;
+  type?: string;
+  questionDetails?: string;
+}
 
-const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
+const QuestionForm = ({ mongoUserId, type, questionDetails }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const editorRef = useRef<Editor | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mode } = useTheme();
 
+  const parsedQuestionDetails = JSON.parse(questionDetails || "");
+
+  const groupedTags = parsedQuestionDetails.tags.map((tag: any) => tag.name);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof questionFormValidation>>({
     resolver: zodResolver(questionFormValidation),
     defaultValues: {
-      questionTitle: "",
-      explanation: "",
-      tags: [],
+      questionTitle: parsedQuestionDetails.questionTitle || "",
+      explanation: parsedQuestionDetails.explanation || "",
+      tags: groupedTags || [],
     },
   });
 
@@ -47,18 +55,28 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
     setIsSubmitting(true);
 
     try {
-      // make an async request to the API -> create a question
+      // make an async request to the API -> create a question / edit a question
 
-      await createQuestion({
-        questionTitle: values.questionTitle,
-        explanation: values.explanation,
-        tags: values.tags,
-        author: JSON.parse(mongoUserId),
-        path: pathname,
-      });
-
-      // if successful, redirect to the home page
-      router.push("/");
+      if (type === "edit") {
+        // edit question
+        await editQuestion({
+          questionTitle: values.questionTitle,
+          explanation: values.explanation,
+          questionId: parsedQuestionDetails._id,
+          path: pathname,
+        })
+        router.push(`/question/${parsedQuestionDetails._id}`);
+      } else {
+        // create question
+        await createQuestion({
+          questionTitle: values.questionTitle,
+          explanation: values.explanation,
+          tags: values.tags,
+          author: JSON.parse(mongoUserId),
+          path: pathname,
+        });
+        router.push("/");
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -154,7 +172,7 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
                     }}
                     onBlur={field.onBlur}
                     onEditorChange={(content) => field.onChange(content)}
-                    initialValue={""}
+                    initialValue={parsedQuestionDetails.explanation || ""}
                     init={{
                       height: 350,
                       menubar: false,
@@ -210,6 +228,7 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
                 <FormControl className="mt-3.5">
                   <>
                     <Input
+                      disabled={type === "edit"}
                       className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                       onKeyDown={(e) => handleInputKeyDown(e, field)}
                     />
@@ -220,16 +239,22 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
                           <Badge
                             key={tag}
                             className="subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize"
-                            onClick={() => handleTagRemove(tag, field)}
+                            onClick={() =>
+                              type !== "edit"
+                                ? handleTagRemove(tag, field)
+                                : () => {}
+                            }
                           >
                             {tag}
-                            <Image
-                              src="/assets/icons/close.svg"
-                              height={12}
-                              width={12}
-                              alt="Close"
-                              className="cursor-pointer object-contain invert-0 dark:invert"
-                            />
+                            {type !== "edit" && (
+                              <Image
+                                src="/assets/icons/close.svg"
+                                height={12}
+                                width={12}
+                                alt="Close"
+                                className="cursor-pointer object-contain invert-0 dark:invert"
+                              />
+                            )}
                           </Badge>
                         ))}
                       </div>

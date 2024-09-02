@@ -247,3 +247,10 @@ export interface DeleteAnswerParams {
   answerId: string;
   path: string;
 }
+
+export interface EditQuestionParams {
+  questionId: string;
+  questionTitle: string;
+  explanation: string;
+  path: string;
+}
