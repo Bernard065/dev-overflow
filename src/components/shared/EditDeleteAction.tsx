@@ -4,14 +4,16 @@ import { deleteAnswers } from "@/lib/actions/answer.action";
 import { deleteQuestion } from "@/lib/actions/question.action";
 import { EditDeleteProps } from "@/types";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import path from "path";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 const EditDeleteAction = ({ type, itemId }: EditDeleteProps) => {
   const pathname = usePathname();
+  const router = useRouter();
 
-  const handleEdit = () => {};
+  const handleEdit = async () => {
+    router.push(`/question/edit/${JSON.parse(itemId)}`);
+  };
 
   const handleDelete = async () => {
     if (type === "question") {
@@ -24,7 +26,7 @@ const EditDeleteAction = ({ type, itemId }: EditDeleteProps) => {
   };
 
   return (
-    <div className="flex gap-3 justify-end items-center max-sm:w-full">
+    <div className="flex items-center justify-end gap-3 max-sm:w-full">
       {type === "question" && (
         <Image
           src="/assets/icons/edit.svg"

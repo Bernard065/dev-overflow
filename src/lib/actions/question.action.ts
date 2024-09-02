@@ -6,14 +6,13 @@ import Tag from "@/database/tag.model";
 import {
   CreateQuestionParams,
   DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionsParams,
   GetUserStatsParams,
   QuestionVoteParams,
 } from "@/types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
-import { use } from "react";
-import { model } from "mongoose";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
 
@@ -180,7 +179,7 @@ export async function getQuestionsByUser(params: GetUserStatsParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = 10 } = params;
+    const { userId } = params;
 
     const totalQuestions = await Question.countDocuments({ author: userId });
 
@@ -212,6 +211,30 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
       { questions: questionId },
       { $pull: { questions: questionId } }
     );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Action to edit a question
+export async function editQuestion(params: EditQuestionParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId, questionTitle, explanation, path } = params;
+
+    const question = await Question.findById(questionId).populate("tags");
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    question.questionTitle = questionTitle;
+    question.explanation = explanation;
+
+    await question.save();
 
     revalidatePath(path);
   } catch (error) {
