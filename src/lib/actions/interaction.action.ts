@@ -5,6 +5,7 @@ import { connectToDatabase } from "../mongoose/mongoose";
 import Question from "@/database/question.model";
 import Interaction from "@/database/interaction.model";
 
+// Action to view a question
 export async function viewQuestion(params: ViewQuestionParams) {
   try {
     connectToDatabase();

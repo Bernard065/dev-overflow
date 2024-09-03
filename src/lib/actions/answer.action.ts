@@ -13,6 +13,7 @@ import Question from "@/database/question.model";
 import { revalidatePath } from "next/cache";
 import Interaction from "@/database/interaction.model";
 
+// Action to create an answer
 export async function createAnswer(params: CreateAnswerParams) {
   try {
     connectToDatabase();
@@ -35,6 +36,7 @@ export async function createAnswer(params: CreateAnswerParams) {
   }
 }
 
+// Action to get all answers
 export async function getAllAnswer(params: GetAnswersParams) {
   try {
     connectToDatabase();
@@ -130,7 +132,7 @@ export async function getUserAnswers(params: GetUserStatsParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = 10 } = params;
+    const { userId } = params;
 
     const totalAnswers = await Answer.countDocuments({ author: userId }); // Count the total number of answers
 
