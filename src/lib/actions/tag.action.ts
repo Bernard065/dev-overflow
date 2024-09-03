@@ -34,6 +34,26 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   }
 }
 
+// Action to get top tags
+export async function getTopTags() {
+  try {
+    connectToDatabase();
+
+    const tags = await Tag.aggregate([
+      {
+        $project: { name: 1, totalQuestions: { $size: "$questions" } },
+      },
+      { $sort: { totalQuestions: -1 } },
+      { $limit: 5 },
+    ]);
+
+    return tags;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Action to get all tags
 export async function getAllTags(params: GetAllTagsParams) {
   try {
     connectToDatabase();
@@ -73,7 +93,6 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     }
 
     const questions = tag.questions;
-
 
     return { questions, tagTitle: tag.name };
   } catch (error) {

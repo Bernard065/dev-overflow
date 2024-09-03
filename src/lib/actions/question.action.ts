@@ -83,6 +83,23 @@ export async function getQuestions(params: GetQuestionsParams) {
   }
 }
 
+// Action to get questions top questions by views
+export async function getTopQuestions() {
+  try {
+    connectToDatabase();
+
+    const questions = await Question.find({})
+      .populate({ path: "tags", model: Tag })
+      .populate({ path: "author", model: User })
+      .sort({ views: -1 })
+      .limit(5);
+
+    return { questions };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // Action to get a question by ID
 export async function getQuestionById(id: string) {
   try {

@@ -36,9 +36,9 @@ const QuestionForm = ({ mongoUserId, type, questionDetails }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mode } = useTheme();
 
-  const parsedQuestionDetails = JSON.parse(questionDetails || "");
+  const parsedQuestionDetails = questionDetails ? JSON.parse(questionDetails) : {};
 
-  const groupedTags = parsedQuestionDetails.tags.map((tag: any) => tag.name);
+  const groupedTags = parsedQuestionDetails.tags?.map((tag: any) => tag.name);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof questionFormValidation>>({
@@ -64,7 +64,7 @@ const QuestionForm = ({ mongoUserId, type, questionDetails }: Props) => {
           explanation: values.explanation,
           questionId: parsedQuestionDetails._id,
           path: pathname,
-        })
+        });
         router.push(`/question/${parsedQuestionDetails._id}`);
       } else {
         // create question

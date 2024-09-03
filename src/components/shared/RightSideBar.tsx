@@ -2,43 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import RenderTag from "./RenderTag";
+import { getTopQuestions } from "@/lib/actions/question.action";
+import { getTopTags } from "@/lib/actions/tag.action";
 
-const RightSideBar = () => {
-  const hostQuestions = [
-    {
-      _id: 1,
-      title:
-        "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
-    },
-    {
-      _id: 2,
-      title:
-        "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
-    },
-    {
-      _id: 3,
-      title:
-        "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
-    },
-    {
-      _id: 4,
-      title:
-        "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
-    },
-    {
-      _id: 5,
-      title:
-        "Best practices for data fetching in a Next.js application with Server-Side Rendering (SSR)?",
-    },
-  ];
+const RightSideBar = async () => {
+  const topQuestions = await getTopQuestions();
 
-  const popularTags = [
-    { _id: 1, title: "JavaScript", totalQuestions: 30 },
-    { _id: 2, title: "NextJs", totalQuestions: 20 },
-    { _id: 3, title: "ReactJs", totalQuestions: 15 },
-    { _id: 4, title: "Ruby", totalQuestions: 25 },
-    { _id: 5, title: "Python", totalQuestions: 10 },
-  ];
+  const popularTags = await getTopTags();
 
   return (
     <section className="background-light900_dark200 custom-scrollbar sticky right-0 top-0 flex h-screen w-[330px] flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden">
@@ -46,14 +16,14 @@ const RightSideBar = () => {
         <div>
           <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
           <div className="mt-7 flex w-full flex-col gap-[30px]">
-            {hostQuestions.map((question) => (
+            {topQuestions?.questions.map((question) => (
               <Link
                 href={`/question/${question._id}`}
                 key={question._id}
                 className="flex cursor-pointer items-center justify-between gap-7"
               >
                 <p className="body-medium text-dark500_light700">
-                  {question.title}
+                  {question.questionTitle}
                 </p>
                 <Image
                   src="/assets/icons/chevron-right.svg"
@@ -69,11 +39,11 @@ const RightSideBar = () => {
         <div className="mt-16">
           <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
           <div className="mt-7 flex w-full flex-col gap-[30px]">
-            {popularTags.map((tag) => (
+            {popularTags?.map((tag) => (
               <RenderTag
                 key={tag._id}
                 _id={tag._id}
-                title={tag.title}
+                title={tag.name}
                 totalQuestions={tag.totalQuestions}
                 showCount
               />
