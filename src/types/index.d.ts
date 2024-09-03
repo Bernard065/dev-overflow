@@ -86,12 +86,6 @@ export interface CreateUserParams {
   picture: string;
 }
 
-export interface UpdateUserParams {
-  clerkId: string;
-  updateData: Partial<IUser>;
-  path: string;
-}
-
 export interface DeleteUserParams {
   clerkId: string;
 }
@@ -252,5 +246,11 @@ export interface EditQuestionParams {
   questionId: string;
   questionTitle: string;
   explanation: string;
+  path: string;
+}
+
+export interface UpdateUserParams {
+  clerkId: string;
+  updateData: Partial<IUser>;
   path: string;
 }

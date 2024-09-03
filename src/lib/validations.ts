@@ -26,3 +26,23 @@ export const answerFormValidation = z.object({
     message: "Answer must be at least 100 characters.",
   }),
 });
+
+export const profileFormValidation = z.object({
+  name: z
+    .string()
+    .min(5, { message: "Name must be at least 5 characters." })
+    .max(50, { message: "Name must be no more than 50 characters." }),
+  username: z
+    .string()
+    .min(5, { message: "Username must be at least 5 characters." })
+    .max(20, { message: "Username must be no more than 20 characters." }),
+  portfolioWebsite: z.string().url({ message: "Invalid URL" }),
+  location: z
+    .string()
+    .min(3, { message: "Location must be at least 3 characters." })
+    .max(50, { message: "Location must be no more than 50 characters." }),
+  bio: z
+    .string()
+    .min(10, { message: "Bio must be at least 10 characters." })
+    .max(150, { message: "Bio must be no more than 150 characters." }),
+});
