@@ -254,3 +254,14 @@ export interface UpdateUserParams {
   updateData: Partial<IUser>;
   path: string;
 }
+
+export interface UrlQueryParams {
+  params: string;
+  key: string;
+  value: string | null;
+}
+
+export interface RemoveKeysFromQueryParams {
+  params: string;
+  keysToRemove: string[];
+}
