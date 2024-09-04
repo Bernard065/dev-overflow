@@ -7,18 +7,19 @@ import React from "react";
 import UserCard from "@/components/cards/UserCard";
 import { getAllUsers } from "@/lib/actions/user.action";
 import Link from "next/link";
+import { SearchParamsProps } from "@/types";
 
-const Page = async () => {
+const Page = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();
 
   if (!userId) redirect("/sign-in");
 
-  const result = await getAllUsers({});
+  const result = await getAllUsers({
+    searchQuery: searchParams.q,
+  });
 
   const users = result?.users || []; // Default to an empty array if undefined
 
-
-  
   return (
     <>
       <div className="flex w-full sm:items-center">

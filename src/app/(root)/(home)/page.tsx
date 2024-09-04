@@ -6,18 +6,13 @@ import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants";
 import { getQuestions } from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
-interface Props {
-  searchParams: { [key: string]: string | undefined };
-}
-
-const Home = async ({ searchParams }: Props) => {
+const Home = async ({ searchParams }: SearchParamsProps) => {
   const result = await getQuestions({
     searchQuery: searchParams.q,
   });
-
-  console.log(result?.questions);
 
   return (
     <>
