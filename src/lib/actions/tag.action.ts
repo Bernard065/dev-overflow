@@ -58,7 +58,15 @@ export async function getAllTags(params: GetAllTagsParams) {
   try {
     connectToDatabase();
 
-    const tags = await Tag.find({});
+    const { searchQuery } = params;
+
+    const query: FilterQuery<typeof Tag> = {};
+
+    if (searchQuery) {
+      query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
+    }
+
+    const tags = await Tag.find(query);
 
     return { tags };
   } catch (error) {
@@ -79,7 +87,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       path: "questions",
       model: "Question",
       match: searchQuery
-        ? { title: { $regex: searchQuery, $options: "i" } }
+        ? { questionTitle: { $regex: searchQuery, $options: "i" } }
         : {},
       options: { sort: { createdAt: -1 } },
       populate: [
