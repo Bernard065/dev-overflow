@@ -4,18 +4,21 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { QuestionFilters } from "@/constants";
 import { getSavedQuestions } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
 
-const Page = async () => {
+const Page = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();
 
   if (!userId) redirect("/sign-in");
 
-  const result = await getSavedQuestions({ clerkId: userId });
+  const result = await getSavedQuestions({
+    clerkId: userId,
+    searchQuery: searchParams.q,
+  });
 
-  console.log("Saved Questions:", result);
   return (
     <>
       <div className="flex w-full sm:items-center">
@@ -26,7 +29,7 @@ const Page = async () => {
         <LocalSearch
           route="/collection"
           imgSrc="assets/icons/search.svg"
-          placeholder="Search by username..."
+          placeholder="Search by question..."
         />
         <Filter
           placeholder="Select a Filter"
