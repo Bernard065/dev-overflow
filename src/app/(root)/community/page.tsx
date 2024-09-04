@@ -16,6 +16,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
 
   const result = await getAllUsers({
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   const users = result?.users || []; // Default to an empty array if undefined
