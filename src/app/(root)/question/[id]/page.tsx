@@ -15,7 +15,16 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 
-const Page = async ({ params }: { params: { id: string } }) => {
+
+interface Props {
+  params: {
+    id: string;
+  };
+}
+
+
+
+const Page = async ({ params }: Props) => {
   const { id } = params;
 
   const result = await getQuestionById(id);
