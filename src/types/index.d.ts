@@ -265,3 +265,7 @@ export interface RemoveKeysFromQueryParams {
   params: string;
   keysToRemove: string[];
 }
+
+export interface SearchParamsProps {
+  searchParams: { [key: string]: string | undefined };
+}
