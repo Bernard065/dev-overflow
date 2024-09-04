@@ -5,11 +5,14 @@ import { Button } from "@/components/ui/button";
 import { TagFilters } from "@/constants";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { formatAndDivideNumber } from "@/lib/utils";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 import React from "react";
 
-const Page = async () => {
-  const result = await getAllTags({});
+const Page = async ({ searchParams }: SearchParamsProps) => {
+  const result = await getAllTags({
+    searchQuery: searchParams.q,
+  });
 
   const tags = result?.tags || []; // Default to an empty array if undefined
 

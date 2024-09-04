@@ -22,7 +22,6 @@ const Page = async ({ params, searchParams }: Props) => {
     searchQuery: searchParams.q,
   });
 
-  console.log("Tag related questions", result);
   return (
     <>
       <div className="flex w-full sm:items-center">
