@@ -2,6 +2,7 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/home/HomeFilter";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants";
@@ -70,6 +71,8 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
           />
         )}
       </div>
+
+      <Pagination />
     </>
   );
 };
