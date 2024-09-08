@@ -72,7 +72,10 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
         )}
       </div>
 
-      <Pagination />
+      <Pagination
+        pageNumber={searchParams?.page ? +searchParams.page : 1}
+        isNext={result.isNext}
+      />
     </>
   );
 };
