@@ -3,15 +3,14 @@ import React from "react";
 import NoResult from "./NoResult";
 import QuestionCard from "../cards/QuestionCard";
 import { TabProps } from "@/types";
+import Pagination from "./Pagination";
 
 
-
-const QuestionTab = async ({
-  userId,
-  clerkId,
-  searchParams,
-}: TabProps) => {
-  const result = await getQuestionsByUser({ userId, page: 1, pageSize: 10 });
+const QuestionTab = async ({ userId, clerkId, searchParams }: TabProps) => {
+  const result = await getQuestionsByUser({
+    userId,
+    page: searchParams.page ? +searchParams.page : 1,
+  });
 
   return (
     <>
@@ -40,6 +39,11 @@ const QuestionTab = async ({
           />
         )}
       </div>
+
+      <Pagination
+        pageNumber={searchParams.page ? +searchParams.page : 1}
+        isNext={result?.isNext}
+      />
     </>
   );
 };
