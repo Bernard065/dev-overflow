@@ -27,6 +27,10 @@ const Pagination = ({ pageNumber, isNext }: Props) => {
     router.push(`?${newSearchParams.toString()}`);
   };
 
+  if (!isNext && pageNumber === 1) {
+    return null;
+  }
+
   return (
     <div className="mt-5 flex w-full items-center justify-center gap-2">
       <Button
