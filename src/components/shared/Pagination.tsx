@@ -1,32 +1,34 @@
 "use client";
 import React from "react";
 import { Button } from "../ui/button";
-import { formUrlQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   pageNumber: number;
-  isNext: boolean;
+  isNext: boolean | undefined;
 }
 
-const Pagination = ({ pageNumber = 1, isNext }: Props) => {
+const Pagination = ({ pageNumber, isNext }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleNavigation = (direction: string) => {
-    const nextPageNumber =
-      direction === "prev" ? pageNumber - 1 : pageNumber + 1;
+    const newPageNumber =
+      direction === "next" ? pageNumber + 1 : pageNumber - 1;
 
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: "page",
-      value: nextPageNumber.toString(),
-    });
+    // Ensure that the page number is not less than 1
+    if (newPageNumber < 1) return;
 
-    router.push(newUrl);
+    // update the URL with the new page number
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("page", newPageNumber.toString());
+
+    // Navigate to the new page with updated search parameters
+    router.push(`?${newSearchParams.toString()}`);
   };
+
   return (
-    <div className="mt-10 flex w-full items-center justify-center gap-2">
+    <div className="mt-5 flex w-full items-center justify-center gap-2">
       <Button
         disabled={pageNumber === 1}
         onClick={() => handleNavigation("prev")}
@@ -38,7 +40,7 @@ const Pagination = ({ pageNumber = 1, isNext }: Props) => {
         <p className="body-semibold text-light-900">{pageNumber}</p>
       </div>
       <Button
-        disabled={isNext}
+        disabled={!isNext}
         onClick={() => handleNavigation("next")}
         className="light-border-2 btn flex min-h-[36px] items-center justify-center gap-2 border"
       >
