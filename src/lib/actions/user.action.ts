@@ -188,7 +188,9 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { clerkId, searchQuery, filter } = params;
+    const { clerkId, searchQuery, filter, page = 1, pageSize = 10 } = params;
+
+    const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? { questionTitle: { $regex: new RegExp(searchQuery, "i") } }
@@ -216,15 +218,18 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
         break;
     }
 
-    const user = await User.findOne({ clerkId }).populate({
-      path: "saved",
-      match: query,
-      options: { sort: sortOptions },
-      populate: [
-        { path: "tags", model: Tag, select: "_id name" },
-        { path: "author", model: User, select: "_id clerkId name picture" },
-      ],
-    });
+    const user = await User.findOne({ clerkId })
+      .populate({
+        path: "saved",
+        match: query,
+        options: { sort: sortOptions, skip: skipAmount, limit: pageSize + 1 },
+        populate: [
+          { path: "tags", model: Tag, select: "_id name" },
+          { path: "author", model: User, select: "_id clerkId name picture" },
+        ],
+      })
+      .skip(skipAmount)
+      .limit(pageSize);
 
     if (!user) {
       throw new Error("User not found");
@@ -232,7 +237,9 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
 
     const savedQuestions = user.saved;
 
-    return { questions: savedQuestions };
+    const isNext = savedQuestions.length > pageSize;
+
+    return { questions: savedQuestions, isNext };
   } catch (error) {
     console.log(error);
   }
