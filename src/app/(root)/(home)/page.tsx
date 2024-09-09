@@ -14,6 +14,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
   const result = await getQuestions({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
   });
 
   // TODO: fetch recommended questions
@@ -72,7 +73,10 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
         )}
       </div>
 
-      <Pagination />
+      <Pagination
+        pageNumber={searchParams?.page ? +searchParams.page : 1}
+        isNext={result?.isNext}
+      />
     </>
   );
 };
