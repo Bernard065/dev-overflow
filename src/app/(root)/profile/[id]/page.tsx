@@ -12,6 +12,7 @@ import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
 import { BadgeCounts } from "@/types";
+
 interface Props {
   params: { id: string };
   searchParams: { [key: string]: string | undefined };
@@ -20,9 +21,11 @@ interface Props {
 const Page = async ({ params, searchParams }: Props) => {
   const { id } = params;
 
-  const { userId: clerkId } = auth();
+  const { userId } = auth();
 
-  const result = await getUserInfo({ userId: id });
+  const userInfo = await getUserInfo({ userId: id });
+
+  console.log("The User Info is: ", userInfo);
 
   const defaultBadgeCounts: BadgeCounts = {
     GOLD: 0,
@@ -30,7 +33,7 @@ const Page = async ({ params, searchParams }: Props) => {
     BRONZE: 0,
   };
 
-  const badgeCounts = result?.badgeCounts || defaultBadgeCounts;
+  const badgeCounts = userInfo?.badgeCounts || defaultBadgeCounts;
 
   return (
     <>
@@ -38,7 +41,7 @@ const Page = async ({ params, searchParams }: Props) => {
         <div className="flex flex-col items-start gap-4 lg:flex-row">
           <div className="size-36 overflow-hidden rounded-full">
             <Image
-              src={result?.user.picture}
+              src={userInfo?.user.picture}
               alt="profile"
               width={144}
               height={144}
@@ -48,36 +51,36 @@ const Page = async ({ params, searchParams }: Props) => {
 
           <div className="mt-3">
             <h2 className="h2-bold text-dark100_light900">
-              {result?.user.name}
+              {userInfo?.user.name}
             </h2>
             <p className="paragraph-regular text-dark200_light800">
-              @{result?.user.username}
+              @{userInfo?.user.username}
             </p>
 
             <div className="mt-5 flex flex-wrap items-center justify-start gap-5">
-              {result?.user.portfolioWebsite && (
+              {userInfo?.user.portfolioWebsite && (
                 <ProfileLink
                   imgUrl="/assets/icons/link.svg"
                   title="Portfolio"
-                  href={result?.user.portfolioWebsite}
+                  href={userInfo?.user.portfolioWebsite}
                 />
               )}
-              {result?.user.location && (
+              {userInfo?.user.location && (
                 <ProfileLink
                   imgUrl="/assets/icons/location.svg"
-                  title={result?.user.location}
+                  title={userInfo?.user.location}
                 />
               )}
 
               <ProfileLink
                 imgUrl="/assets/icons/calendar.svg"
-                title={getJoinedDate(result?.user.joinedAt)}
+                title={getJoinedDate(userInfo?.user.joinedAt)}
               />
             </div>
 
-            {result?.user.bio && (
+            {userInfo?.user.bio && (
               <p className="paragraph-regular text-dark400_light800 mt-8">
-                {result?.user.bio}
+                {userInfo?.user.bio}
               </p>
             )}
           </div>
@@ -85,7 +88,7 @@ const Page = async ({ params, searchParams }: Props) => {
 
         <div className="flex justify-end max-md:mt-3 max-sm:mb-5 max-sm:w-full">
           <SignedIn>
-            {clerkId === result?.user.clerkId && (
+            {userId === userInfo?.user.clerkId && (
               <Link href="/profile/edit">
                 <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                   Edit Profile
@@ -97,10 +100,10 @@ const Page = async ({ params, searchParams }: Props) => {
       </div>
 
       <Stats
-        totalQuestions={result?.totalQuestions || 0}
-        totalAnswers={result?.totalAnswers || 0}
+        totalQuestions={userInfo?.totalQuestions || 0}
+        totalAnswers={userInfo?.totalAnswers || 0}
         badgeCounts={badgeCounts}
-        reputation={result?.user.reputation || 0}
+        reputation={userInfo?.user.reputation || 0}
       />
 
       <div className="mt-10 flex gap-10">
@@ -115,15 +118,15 @@ const Page = async ({ params, searchParams }: Props) => {
           </TabsList>
           <TabsContent value="top-questions">
             <QuestionTab
-              userId={result?.user._id}
-              clerkId={clerkId}
+              userId={userInfo?.user._id}
+              clerkId={userId}
               searchParams={searchParams}
             />
           </TabsContent>
           <TabsContent value="answers">
             <AnswerTab
-              userId={result?.user._id}
-              clerkId={clerkId}
+              userId={userInfo?.user._id}
+              clerkId={userId}
               searchParams={searchParams}
             />
           </TabsContent>
