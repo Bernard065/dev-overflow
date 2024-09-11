@@ -72,3 +72,31 @@ export const QuestionFilters = [
   { name: "Most Viewed", value: "most_viewed" },
   { name: "Most Answered", value: "most_answered" },
 ];
+
+export const BADGE_CRITERIA = {
+  QUESTION_COUNT: {
+    BRONZE: 10,
+    SILVER: 50,
+    GOLD: 100,
+  },
+  ANSWER_COUNT: {
+    BRONZE: 10,
+    SILVER: 50,
+    GOLD: 100,
+  },
+  QUESTION_UPVOTES: {
+    BRONZE: 10,
+    SILVER: 50,
+    GOLD: 100,
+  },
+  ANSWER_UPVOTES: {
+    BRONZE: 10,
+    SILVER: 50,
+    GOLD: 100,
+  },
+  TOTAL_VIEWS: {
+    BRONZE: 1000,
+    SILVER: 10000,
+    GOLD: 100000,
+  },
+};

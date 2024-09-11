@@ -1,5 +1,6 @@
 import { IUser } from "@/database/user.model";
 import { Schema } from "mongoose";
+import { BADGE_CRITERIA } from "@/constants";
 
 export interface RenderTagProps {
   _id: string | number;
@@ -193,9 +194,26 @@ export interface GetQuestionsByTagIdParams {
   searchQuery?: string;
 }
 
+export interface BadgeCounts {
+  GOLD: number;
+  SILVER: number;
+  BRONZE: number;
+}
+
+export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;
+
+export interface BadgeParams {
+  criteria: {
+    type: keyof typeof BADGE_CRITERIA;
+    count: number;
+  }[];
+}
+
 export interface StatsProps {
   totalQuestions: number;
   totalAnswers: number;
+  badgeCounts: BadgeCounts;
+  reputation: number; 
 }
 
 export interface StatsCardProps {
