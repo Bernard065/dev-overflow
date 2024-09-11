@@ -11,6 +11,7 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
+import { BadgeCounts } from "@/types";
 interface Props {
   params: { id: string };
   searchParams: { [key: string]: string | undefined };
@@ -22,6 +23,14 @@ const Page = async ({ params, searchParams }: Props) => {
   const { userId: clerkId } = auth();
 
   const result = await getUserInfo({ userId: id });
+
+  const defaultBadgeCounts: BadgeCounts = {
+    GOLD: 0,
+    SILVER: 0,
+    BRONZE: 0,
+  };
+
+  const badgeCounts = result?.badgeCounts || defaultBadgeCounts;
 
   return (
     <>
@@ -90,6 +99,8 @@ const Page = async ({ params, searchParams }: Props) => {
       <Stats
         totalQuestions={result?.totalQuestions || 0}
         totalAnswers={result?.totalAnswers || 0}
+        badgeCounts={badgeCounts}
+        reputation={result?.user.reputation || 0}
       />
 
       <div className="mt-10 flex gap-10">

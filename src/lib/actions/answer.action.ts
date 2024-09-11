@@ -12,6 +12,7 @@ import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
 import { revalidatePath } from "next/cache";
 import Interaction from "@/database/interaction.model";
+import User from "@/database/user.model";
 
 // Action to create an answer
 export async function createAnswer(params: CreateAnswerParams) {
@@ -24,11 +25,20 @@ export async function createAnswer(params: CreateAnswerParams) {
     const newAnswer = await Answer.create({ author, question, content });
 
     // Add the new answer to the question
-    await Question.findByIdAndUpdate(question, {
+    const questionObject = await Question.findByIdAndUpdate(question, {
       $push: { answers: newAnswer._id },
     });
 
     // TODO: Add interaction to the user
+    await Interaction.create({
+      user: author,
+      action: "answer",
+      answer: newAnswer._id,
+      question,
+      tags: questionObject.tags,
+    });
+
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
     revalidatePath(path);
   } catch (error) {
@@ -84,6 +94,13 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
     }
 
     // Increment the user's reputation for upvoting a question
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -120,6 +137,13 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
     }
 
     // Increment the user's reputation for downvoting a question
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? 1 : -1 },
+    });
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasdownVoted ? 10 : -10 },
+    });
 
     revalidatePath(path);
   } catch (error) {

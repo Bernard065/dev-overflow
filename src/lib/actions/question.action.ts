@@ -56,8 +56,15 @@ export async function createQuestion(params: CreateQuestionParams) {
     });
 
     // Create an interaction record for the user's ask_question action
+    await Interaction.create({
+      user: author,
+      question: question._id,
+      action: "ask_question",
+      tags: tagDocuments,
+    });
 
     // Increment the user's reputation by 5 points for creating a question
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
 
     revalidatePath(path);
   } catch (error) {
@@ -184,7 +191,15 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       throw new Error("Question not found");
     }
 
-    // Increment the user's reputation for upvoting a question
+    // Increment the user's reputation by +1/-1 for upvoting/downvoting a question
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+
+    // Increment author's reputation by +10/-10 for getting an upvote/downvote on their question
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -221,6 +236,13 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     }
 
     // Increment the user's reputation for downvoting a question
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? 1 : -1 },
+    });
+
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasdownVoted ? 10 : -10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -240,7 +262,7 @@ export async function getQuestionsByUser(params: GetUserStatsParams) {
     const totalQuestions = await Question.countDocuments({ author: userId });
 
     const userQuestions = await Question.find({ author: userId })
-      .sort({ views: -1, upvotes: -1 })
+      .sort({ createdAt: -1, views: -1, upvotes: -1 })
       .skip(skipAmount)
       .limit(pageSize)
       .populate("tags", "_id name")

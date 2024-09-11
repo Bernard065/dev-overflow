@@ -1,7 +1,13 @@
-import { RemoveKeysFromQueryParams, UrlQueryParams } from "@/types";
+import {
+  BadgeCounts,
+  BadgeParams,
+  RemoveKeysFromQueryParams,
+  UrlQueryParams,
+} from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
+import { BADGE_CRITERIA } from "@/constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -87,7 +93,10 @@ export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
   );
 };
 
-export const removeKeysFromQuery = ({ params, keysToRemove }: RemoveKeysFromQueryParams) => {
+export const removeKeysFromQuery = ({
+  params,
+  keysToRemove,
+}: RemoveKeysFromQueryParams) => {
   const currentUrl = qs.parse(params);
 
   keysToRemove.forEach((key) => {
@@ -101,4 +110,25 @@ export const removeKeysFromQuery = ({ params, keysToRemove }: RemoveKeysFromQuer
     },
     { skipNull: true }
   );
+};
+
+export const assignBadges = (params: BadgeParams) => {
+  const badgeCounts: BadgeCounts = {
+    GOLD: 0,
+    SILVER: 0,
+    BRONZE: 0,
+  };
+
+  const { criteria } = params;
+
+  criteria.forEach((criterion) => {
+    const { type, count } = criterion;
+    const badgeCriteria: any = BADGE_CRITERIA[type];
+
+    Object.keys(badgeCriteria).forEach((badge: any) => {
+      if (count >= badgeCriteria[badge]) {
+        badgeCounts[badge as keyof BadgeCounts] += 1;
+      }
+    });
+  });
 };
