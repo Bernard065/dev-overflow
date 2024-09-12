@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/hooks/use-toast";
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import { viewQuestion } from "@/lib/actions/interaction.action";
 import {
@@ -35,7 +36,11 @@ const Votes = ({
 
   const handleVote = async (action: string) => {
     try {
-      if (!userId) return null;
+      if (!userId)
+        return toast({
+          title: "Please sign in to vote",
+          description: "You need to sign in to perform this question",
+        });
 
       if (action === "upvote") {
         if (type === "question") {
@@ -57,6 +62,18 @@ const Votes = ({
             path: pathname,
           });
         }
+
+        return toast({
+          title: `Upvote ${!hasupVoted ? "Successful" : "Removed"}`,
+          variant: !hasupVoted ? "default" : "destructive",
+          style: {
+            backgroundColor: !hasupVoted ? "#4CAF50" : "#F44336", // Green for upvote, red for removal
+            color: "#FFFFFF", // White text
+            borderRadius: "4px",
+            padding: "16px",
+          },
+          className: "!font-semibold !text-sm",
+        });
       }
 
       if (action === "downvote") {
@@ -79,6 +96,18 @@ const Votes = ({
             path: pathname,
           });
         }
+
+        return toast({
+          title: `Downvote ${!hasdownVoted ? "Successful" : "Removed"}`,
+          variant: !hasdownVoted ? "default" : "destructive",
+          style: {
+            backgroundColor: !hasupVoted ? "#4CAF50" : "#F44336", // Green for upvote, red for removal
+            color: "#FFFFFF", // White text
+            borderRadius: "4px",
+            padding: "16px",
+          },
+          className: "!font-semibold !text-sm",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -90,6 +119,18 @@ const Votes = ({
       userId: JSON.parse(userId),
       questionId: JSON.parse(itemId),
       path: pathname,
+    });
+
+    toast({
+      title: `Question ${!hasSaved ? "Saved in" : "Remover from"} your collection`,
+      variant: !hasSaved ? "default" : "destructive",
+      style: {
+        backgroundColor: !hasupVoted ? "#4CAF50" : "#F44336", // Green for upvote, red for removal
+        color: "#FFFFFF", // White text
+        borderRadius: "4px",
+        padding: "16px",
+      },
+      className: "!font-semibold !text-sm",
     });
   };
 

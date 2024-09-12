@@ -1,6 +1,7 @@
 import LeftSideBar from "@/components/shared/LeftSideBar";
 import Navbar from "@/components/shared/navbar/Navbar";
 import RightSideBar from "@/components/shared/RightSideBar";
+import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 
 export default function RootLayout({
@@ -20,6 +21,8 @@ export default function RootLayout({
 
         <RightSideBar />
       </div>
+
+      <Toaster />
     </main>
   );
 }
