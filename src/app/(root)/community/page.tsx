@@ -9,6 +9,16 @@ import { getAllUsers } from "@/lib/actions/user.action";
 import Link from "next/link";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Community | Dev-overflow",
+  description:
+    "Stack overflow clone - A community-driven platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers from around the world.",
+  icons: {
+    icon: "/assets/images/site-logo.svg",
+  },
+};
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();

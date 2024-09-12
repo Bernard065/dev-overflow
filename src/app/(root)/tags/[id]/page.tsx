@@ -3,6 +3,7 @@ import NoResult from "@/components/shared/NoResult";
 import Pagination from "@/components/shared/Pagination";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { getQuestionsByTagId } from "@/lib/actions/tag.action";
+import type { Metadata } from "next";
 import React from "react";
 
 interface Props {
@@ -13,6 +14,25 @@ interface Props {
     [key: string]: string | undefined;
   };
 }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = params;
+
+  const result = await getQuestionsByTagId({
+    tagId: id,
+    searchQuery: '',
+    page: 1,
+  });
+
+  const tagTitle = result?.tagTitle || "Questions";
+  const description = `Explore all questions tagged with ${tagTitle}. Find answers, ask new questions, and join the discussion.`;
+
+  return {
+    title: `${tagTitle} - Questions`,
+    description,
+  };
+}
+
 
 const Page = async ({ params, searchParams }: Props) => {
   const { id } = params;
