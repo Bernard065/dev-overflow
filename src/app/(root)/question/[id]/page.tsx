@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
-
+import type { Metadata } from "next";
 
 interface Props {
   params: {
@@ -22,7 +22,19 @@ interface Props {
   };
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = params;
+  const result = await getQuestionById(id);
 
+  const firstTag = result?.tags?.[0]?.name || "Tag";
+  const questionTitle = result?.questionTitle || "Question Details";
+
+  return {
+    title: `${firstTag} - ${questionTitle}`,
+    description:
+      result?.explanation.slice(0, 150) || "Detailed view of the question.",
+  };
+}
 
 const Page = async ({ params }: Props) => {
   const { id } = params;

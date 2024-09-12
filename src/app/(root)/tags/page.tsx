@@ -7,9 +7,18 @@ import { TagFilters } from "@/constants";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { formatAndDivideNumber } from "@/lib/utils";
 import { SearchParamsProps } from "@/types";
+import type { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 
+export const metadata: Metadata = {
+  title: "Tags | Dev-overflow",
+  description:
+    "Stack overflow clone - A community-driven platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers from around the world.",
+  icons: {
+    icon: "/assets/images/site-logo.svg",
+  },
+};
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllTags({
@@ -19,8 +28,6 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
   });
 
   const tags = result?.tags || []; // Default to an empty array if undefined
-
-
 
   return (
     <>

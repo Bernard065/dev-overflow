@@ -8,7 +8,17 @@ import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants";
 import { getQuestions } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Home | Dev-overflow",
+  description:
+    "Stack overflow clone - A community-driven platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers from around the world.",
+  icons: {
+    icon: "/assets/images/site-logo.svg",
+  },
+};
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
   const result = await getQuestions({
