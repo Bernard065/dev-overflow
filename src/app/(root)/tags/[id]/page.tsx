@@ -63,10 +63,10 @@ const Page = async ({ params, searchParams }: Props) => {
         )}
       </div>
 
-        <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
-          isNext={result?.isNext}
-        />
+      <Pagination
+        pageNumber={searchParams.page ? +searchParams.page : 1}
+        isNext={result?.isNext}
+      />
     </>
   );
 };

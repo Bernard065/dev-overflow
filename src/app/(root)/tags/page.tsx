@@ -10,6 +10,7 @@ import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 import React from "react";
 
+
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllTags({
     searchQuery: searchParams.q,
@@ -18,6 +19,8 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
   });
 
   const tags = result?.tags || []; // Default to an empty array if undefined
+
+
 
   return (
     <>
@@ -80,7 +83,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
 
       <Pagination
         pageNumber={searchParams?.page ? +searchParams.page : 1}
-        isNext={result?.isNext}   
+        isNext={result?.isNext}
       />
     </>
   );
