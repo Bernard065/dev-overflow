@@ -213,7 +213,7 @@ export interface StatsProps {
   totalQuestions: number;
   totalAnswers: number;
   badgeCounts: BadgeCounts;
-  reputation: number; 
+  reputation: number;
 }
 
 export interface StatsCardProps {
@@ -286,4 +286,11 @@ export interface RemoveKeysFromQueryParams {
 
 export interface SearchParamsProps {
   searchParams: { [key: string]: string | undefined };
+}
+
+export interface RecommendedParams {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
 }
